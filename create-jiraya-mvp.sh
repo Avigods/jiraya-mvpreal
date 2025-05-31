@@ -1,205 +1,10 @@
-#!/bin/bash
-
-# Jiraya MVP - Complete Project Setup and Export Script
-# Blockchain-Anchored Shipping Cost Forecasting Engine
-# Built for No-Pitch Competition 2025
-
-set -e
-
-echo "🚀 Setting up Jiraya MVP - Complete Exportable Package"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Create project structure
-echo "📁 Creating project structure..."
-mkdir -p jiraya-mvp/{frontend,backend}/{src,public}
-mkdir -p jiraya-mvp/frontend/src/{components,utils}
-mkdir -p jiraya-mvp/backend/{routes,utils,middleware,tests}
-mkdir -p jiraya-mvp/{nginx,kubernetes,scripts,.github/workflows}
-
-cd jiraya-mvp
-
-# Frontend package.json
-echo "📦 Creating frontend package.json..."
-cat > frontend/package.json << 'EOF'
-{
-  "name": "jiraya-frontend",
-  "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "lucide-react": "^0.263.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint src/ --ext .js,.jsx"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.3.0",
-    "@tailwindcss/forms": "^0.5.4",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "eslint": "^8.45.0"
-  },
-  "proxy": "http://localhost:5000"
-}
-EOF
-
-# Backend package.json
-echo "📦 Creating backend package.json..."
-cat > backend/package.json << 'EOF'
-{
-  "name": "jiraya-backend",
-  "version": "1.0.0",
-  "description": "Jiraya Shipping Cost Forecasting API",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.0.0",
-    "morgan": "^1.10.0",
-    "dotenv": "^16.3.1",
-    "joi": "^17.9.2",
-    "node-cron": "^3.0.2",
-    "axios": "^1.4.0",
-    "compression": "^1.7.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1",
-    "jest": "^29.6.1",
-    "supertest": "^6.3.3"
-  },
-  "keywords": [
-    "shipping",
-    "logistics",
-    "blockchain",
-    "forecasting",
-    "api",
-    "no-pitch-competition"
-  ],
-  "author": "Jiraya Team",
-  "license": "MIT"
-}
-EOF
-
-# Frontend index.css
-echo "🎨 Creating frontend index.css..."
-cat > frontend/src/index.css << 'EOF'
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles for Jiraya */
-@layer components {
-  .btn-primary {
-    @apply bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors;
-  }
-  
-  .card {
-    @apply bg-white rounded-xl shadow-lg p-6;
-  }
-  
-  .input-field {
-    @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
-  }
-}
-
-/* Animation for loading states */
-@keyframes pulse-blue {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.animate-pulse-blue {
-  animation: pulse-blue 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Gradient backgrounds */
-.gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.gradient-card {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-EOF
-
-# Frontend index.js
-echo "⚛️ Creating frontend index.js..."
-cat > frontend/src/index.js << 'EOF'
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-EOF
-
-# Frontend App.js
-echo "⚛️ Creating frontend App.js..."
-cat > frontend/src/App.js << 'EOF'
 import React, { useState } from 'react';
-import Header from './components/Header';
-import SingleForecast from './components/SingleForecast';
-import BatchProcessing from './components/BatchProcessing';
-import MarketAnalytics from './components/MarketAnalytics';
-import Footer from './components/Footer';
+import { Shield, TrendingUp, DollarSign, Calculator, Upload, Download, BarChart3, Package, CheckCircle, Clock, Zap, Info } from 'lucide-react';
 
+// Main App Component
 function App() {
   const [activeTab, setActiveTab] = useState('single');
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       <Header />
@@ -250,680 +55,681 @@ function App() {
   );
 }
 
-export default App;
-EOF
-
-# Backend server.js
-echo "🔧 Creating backend server.js..."
-cat > backend/server.js << 'EOF'
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const compression = require('compression');
-require('dotenv').config();
-
-const forecastRoutes = require('./routes/forecast');
-const blockchainRoutes = require('./routes/blockchain');
-const analyticsRoutes = require('./routes/analytics');
-const batchRoutes = require('./routes/batch');
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Security and performance middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    },
-  },
-}));
-app.use(compression());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true
-}));
-app.use(morgan('combined'));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-// Rate limiting for production
-if (process.env.NODE_ENV === 'production') {
-  const rateLimit = require('express-rate-limit');
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-  });
-  app.use('/api/', limiter);
+// Header Component
+function Header() {
+  return (
+    <div className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-blue-600 rounded-lg">
+              <Shield className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Jiraya</h1>
+              <p className="text-sm text-gray-600">Blockchain-Anchored Shipping Cost Forecasting Engine</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-6">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-600">23%</p>
+              <p className="text-xs text-gray-600">Accuracy Boost</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-blue-600">$0.15</p>
+              <p className="text-xs text-gray-600">Per API Call</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-purple-600">5.2x</p>
+              <p className="text-xs text-gray-600">ROI</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-// Routes
-app.use('/api/forecast', forecastRoutes);
-app.use('/api/blockchain', blockchainRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/batch', batchRoutes);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    version: '1.0.0',
-    environment: process.env.NODE_ENV || 'development',
-    uptime: process.uptime()
+// Single Forecast Component
+function SingleForecast() {
+  const [formData, setFormData] = useState({
+    origin: '',
+    destination: '',
+    weight: '',
+    value: '',
+    hsCode: '',
+    shippingMode: 'ocean'
   });
-});
+  
+  const [forecast, setForecast] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [blockchainEvents, setBlockchainEvents] = useState([]);
 
-// API documentation endpoint
-app.get('/api', (req, res) => {
-  res.json({
-    name: 'Jiraya API',
-    version: '1.0.0',
-    description: 'Blockchain-Anchored Shipping Cost Forecasting Engine',
-    endpoints: {
-      'GET /health': 'Health check',
-      'POST /api/forecast/calculate': 'Calculate shipping cost forecast',
-      'GET /api/forecast/routes': 'Get supported routes',
-      'GET /api/blockchain/events/:route': 'Get blockchain events for route',
-      'POST /api/blockchain/verify': 'Verify blockchain event',
-      'POST /api/batch/process': 'Process batch shipments',
-      'GET /api/analytics/market': 'Get market analytics',
-      'GET /api/analytics/roi': 'Calculate ROI'
+  const calculateForecast = () => {
+    if (!formData.origin || !formData.destination || !formData.weight || !formData.value) {
+      alert('Please fill in all required fields');
+      return;
     }
-  });
-});
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack);
-  res.status(err.status || 500).json({
-    success: false,
-    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
-    timestamp: new Date().toISOString()
-  });
-});
-
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route not found',
-    path: req.originalUrl,
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    console.log('Process terminated');
-  });
-});
-
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Jiraya API server running on port ${PORT}`);
-  console.log(`📍 Health check: http://localhost:${PORT}/health`);
-  console.log(`📚 API docs: http://localhost:${PORT}/api`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
-
-module.exports = app;
-EOF
-
-# Environment files
-echo "🔐 Creating environment configuration..."
-cat > .env.example << 'EOF'
-# Backend Environment Variables
-NODE_ENV=development
-PORT=5000
-CORS_ORIGIN=http://localhost:3000
-
-# API Keys (replace with actual values for production)
-BLOCKCHAIN_API_KEY=your_blockchain_api_key_here
-SHIPPING_DATA_API_KEY=your_shipping_data_api_key_here
-
-# Database Configuration (if using)
-DATABASE_URL=your_database_url_here
-
-# JWT Secret (if implementing auth)
-JWT_SECRET=your_jwt_secret_here
-
-# Logging
-LOG_LEVEL=info
-
-# Frontend Environment Variables (create frontend/.env)
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_VERSION=1.0.0
-REACT_APP_ENVIRONMENT=development
-EOF
-
-cat > frontend/.env.example << 'EOF'
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_VERSION=1.0.0
-REACT_APP_ENVIRONMENT=development
-REACT_APP_COMPANY_NAME=Jiraya
-EOF
-
-# Docker Compose
-echo "🐳 Creating Docker configuration..."
-cat > docker-compose.yml << 'EOF'
-version: '3.8'
-
-services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - REACT_APP_API_URL=http://localhost:5000/api
-      - REACT_APP_VERSION=1.0.0
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    environment:
-      - NODE_ENV=development
-      - PORT=5000
-      - CORS_ORIGIN=http://localhost:3000
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - frontend
-      - backend
-    profiles:
-      - production
-EOF
-
-# Frontend Dockerfile
-echo "🐳 Creating frontend Dockerfile..."
-cat > frontend/Dockerfile << 'EOF'
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
-COPY . .
-
-# Build the app
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-EOF
-
-# Backend Dockerfile
-echo "🐳 Creating backend Dockerfile..."
-cat > backend/Dockerfile << 'EOF'
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
-COPY . .
-
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S jiraya -u 1001
-
-# Change ownership
-RUN chown -R jiraya:nodejs /app
-USER jiraya
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:5000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
-
-EXPOSE 5000
-CMD ["npm", "start"]
-EOF
-
-# Setup script
-echo "🛠️ Creating setup script..."
-cat > scripts/setup.sh << 'EOF'
-#!/bin/bash
-
-# Jiraya MVP Development Setup Script
-set -e
-
-echo "🛠️  Setting up Jiraya development environment..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Check Node.js version
-if ! command -v node &> /dev/null; then
-    echo "❌ Node.js is not installed. Please install Node.js 18+ first."
-    exit 1
-fi
-
-NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
-if [ $NODE_VERSION -lt 18 ]; then
-    echo "❌ Node.js version $NODE_VERSION is not supported. Please upgrade to Node.js 18+."
-    exit 1
-fi
-
-echo "✅ Node.js $(node -v) detected"
-
-# Install frontend dependencies
-echo "📦 Installing frontend dependencies..."
-cd frontend
-npm install
-cd ..
-
-# Install backend dependencies
-echo "📦 Installing backend dependencies..."
-cd backend
-npm install
-cd ..
-
-# Create environment files
-echo "📝 Setting up environment files..."
-if [ ! -f frontend/.env ]; then
-    cp frontend/.env.example frontend/.env
-    echo "✅ Created frontend/.env"
-fi
-
-if [ ! -f backend/.env ]; then
-    cp .env.example backend/.env
-    echo "✅ Created backend/.env"
-fi
-
-# Install global tools (optional)
-echo "🔧 Installing global development tools..."
-npm install -g concurrently nodemon
-
-# Create development script
-echo "🚀 Creating development startup script..."
-cat > start-dev.sh << 'DEVEOF'
-#!/bin/bash
-echo "🚀 Starting Jiraya in development mode..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-concurrently \
-  "cd backend && npm run dev" \
-  "cd frontend && npm start" \
-  --names "API,WEB" \
-  --prefix-colors "blue,green" \
-  --kill-others-on-fail
-DEVEOF
-
-chmod +x start-dev.sh
-
-echo ""
-echo "✅ Setup complete!"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo ""
-echo "🚀 To start development:"
-echo "   ./start-dev.sh"
-echo ""
-echo "📱 Or run separately:"
-echo "   Backend:  cd backend && npm run dev"
-echo "   Frontend: cd frontend && npm start"
-echo ""
-echo "🌍 URLs:"
-echo "   Frontend: http://localhost:3000"
-echo "   Backend:  http://localhost:5000"
-echo "   Health:   http://localhost:5000/health"
-echo ""
-echo "📚 Next steps:"
-echo "   1. Update environment variables in .env files"
-echo "   2. Run ./start-dev.sh to start development"
-echo "   3. Open http://localhost:3000 to see the app"
-EOF
-
-chmod +x scripts/setup.sh
-
-# Production deployment script
-echo "🚀 Creating production deployment script..."
-cat > scripts/deploy.sh << 'EOF'
-#!/bin/bash
-
-# Jiraya MVP Production Deployment Script
-set -e
-
-echo "🚀 Starting Jiraya production deployment..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Check if Docker is installed
-if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed. Please install Docker first."
-    exit 1
-fi
-
-# Check if Docker Compose is installed
-if ! command -v docker-compose &> /dev/null; then
-    echo "❌ Docker Compose is not installed. Please install Docker Compose first."
-    exit 1
-fi
-
-# Create production environment file if it doesn't exist
-if [ ! -f .env ]; then
-    echo "📝 Creating production environment file..."
-    cp .env.example .env
-    echo "⚠️  Please update .env file with your production configuration values"
-    echo "⚠️  Update CORS_ORIGIN, API keys, and other production settings"
-    read -p "Press enter to continue after updating .env file..."
-fi
-
-# Build and start services
-echo "🔨 Building and starting production services..."
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
-
-# Wait for services to be ready
-echo "⏳ Waiting for services to be ready..."
-sleep 30
-
-# Health check
-echo "🏥 Checking service health..."
-MAX_ATTEMPTS=10
-ATTEMPT=1
-
-while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-    echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+    setLoading(true);
     
-    if curl -f http://localhost:5000/health > /dev/null 2>&1; then
-        echo "✅ Backend is healthy"
-        break
-    else
-        if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-            echo "❌ Backend health check failed after $MAX_ATTEMPTS attempts"
-            docker-compose logs backend
-            exit 1
-        fi
-        sleep 5
-        ATTEMPT=$((ATTEMPT + 1))
-    fi
-done
+    setTimeout(() => {
+      const result = mockCalculateForecast(formData);
+      const events = mockGenerateBlockchainEvents(formData.origin, formData.destination);
+      
+      setForecast(result);
+      setBlockchainEvents(events);
+      setLoading(false);
+    }, 2000);
+  };
 
-if curl -f http://localhost:3000 > /dev/null 2>&1; then
-    echo "✅ Frontend is accessible"
-else
-    echo "❌ Frontend is not accessible"
-    docker-compose logs frontend
-    exit 1
-fi
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-1">
+        <ShipmentForm 
+          formData={formData}
+          setFormData={setFormData}
+          onCalculate={calculateForecast}
+          loading={loading}
+        />
+      </div>
+      
+      <div className="lg:col-span-2 space-y-6">
+        {blockchainEvents.length > 0 && (
+          <BlockchainEvents events={blockchainEvents} forecast={forecast} />
+        )}
+        
+        {forecast && (
+          <ForecastResults forecast={forecast} />
+        )}
+      </div>
+    </div>
+  );
+}
 
-echo ""
-echo "🎉 Jiraya is now running in production mode!"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📍 Frontend: http://localhost:3000"
-echo "📍 Backend API: http://localhost:5000/api"
-echo "📍 Health Check: http://localhost:5000/health"
-echo ""
-echo "📋 To view logs:"
-echo "   docker-compose logs -f"
-echo ""
-echo "🛑 To stop:"
-echo "   docker-compose down"
+// Shipment Form Component
+function ShipmentForm({ formData, setFormData, onCalculate, loading }) {
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="flex items-center space-x-2 mb-6">
+        <Package className="h-5 w-5 text-blue-600" />
+        <h2 className="text-xl font-semibold text-gray-900">Shipment Details</h2>
+      </div>
+      
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Origin</label>
+            <select 
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={formData.origin}
+              onChange={(e) => setFormData({...formData, origin: e.target.value})}
+            >
+              <option value="">Select...</option>
+              <option value="CN">China</option>
+              <option value="DE">Germany</option>
+              <option value="US">United States</option>
+              <option value="JP">Japan</option>
+              <option value="KR">South Korea</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
+            <select 
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={formData.destination}
+              onChange={(e) => setFormData({...formData, destination: e.target.value})}
+            >
+              <option value="">Select...</option>
+              <option value="US">United States</option>
+              <option value="EU">European Union</option>
+              <option value="CA">Canada</option>
+            </select>
+          </div>
+        </div>
 
-# Show recent logs
-echo "📋 Recent service logs:"
-docker-compose logs --tail=20
-EOF
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Shipping Mode</label>
+          <select 
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value={formData.shippingMode}
+            onChange={(e) => setFormData({...formData, shippingMode: e.target.value})}
+          >
+            <option value="ocean">Ocean Freight</option>
+            <option value="air">Air Freight</option>
+            <option value="express">Express Delivery</option>
+          </select>
+        </div>
 
-chmod +x scripts/deploy.sh
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+            <input 
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="1000"
+              value={formData.weight}
+              onChange={(e) => setFormData({...formData, weight: e.target.value})}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Value (USD)</label>
+            <input 
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="50000"
+              value={formData.value}
+              onChange={(e) => setFormData({...formData, value: e.target.value})}
+            />
+          </div>
+        </div>
 
-# README
-echo "📖 Creating README.md..."
-cat > README.md << 'EOF'
-# 🚀 Jiraya MVP
-## Blockchain-Anchored Shipping Cost Forecasting Engine
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">HS Code</label>
+          <input 
+            type="text"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="8542.39"
+            value={formData.hsCode}
+            onChange={(e) => setFormData({...formData, hsCode: e.target.value})}
+          />
+        </div>
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/jiraya/mvp)
-[![Coverage](https://img.shields.io/badge/coverage-85%25-green)](https://github.com/jiraya/mvp)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![No-Pitch Competition](https://img.shields.io/badge/no--pitch-2025-gold)](https://nopitch.com)
+        <button 
+          onClick={onCalculate}
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center space-x-2"
+        >
+          {loading ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <span>Calculating...</span>
+            </>
+          ) : (
+            <>
+              <Calculator className="h-4 w-4" />
+              <span>Calculate Forecast</span>
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
 
-> Revolutionary shipping cost forecasting that eliminates uncertainty through blockchain-verified shipment events, delivering 23% accuracy improvements over traditional methods.
+// Blockchain Events Component
+function BlockchainEvents({ events, forecast }) {
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="flex items-center space-x-2 mb-4">
+        <Shield className="h-5 w-5 text-green-600" />
+        <h3 className="text-lg font-semibold text-gray-900">Blockchain Verification Status</h3>
+        <div className="ml-auto bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+          {forecast?.verification.verified}/{forecast?.verification.total} Verified
+        </div>
+      </div>
+      <div className="space-y-3">
+        {events.map((event) => (
+          <div key={event.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div className="flex items-center space-x-3">
+              {event.verified ? (
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              ) : (
+                <Clock className="h-5 w-5 text-yellow-600" />
+              )}
+              <div>
+                <p className="font-medium text-gray-900">{event.event}</p>
+                <p className="text-sm text-gray-500">{event.timestamp}</p>
+                {event.hash !== 'pending' && (
+                  <p className="text-xs text-blue-600 font-mono">{event.hash}</p>
+                )}
+              </div>
+            </div>
+            <div className="text-right">
+              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                event.verified ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+              }`}>
+                {event.verified ? 'Verified' : 'Pending'}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">{event.confidence}% confidence</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-## 🎯 Built for the No-Pitch Competition
+// Forecast Results Component
+function ForecastResults({ forecast }) {
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
 
-This MVP demonstrates strong unit economics and technical feasibility:
-- **$34.7M ARR** projection by Year 5
-- **50:1 LTV:CAC ratio** by Year 3
-- **5.2 month** payback period
-- **23% accuracy improvement** over traditional forecasting
+  const getConfidenceColor = (score) => {
+    if (score >= 90) return 'text-green-600 bg-green-50 border-green-200';
+    if (score >= 80) return 'text-blue-600 bg-blue-50 border-blue-200';
+    return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+  };
 
-## ✨ Key Features
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <TrendingUp className="h-5 w-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Enhanced Cost Forecast</h3>
+        </div>
+        <div className={`px-4 py-2 rounded-full text-sm font-medium border ${getConfidenceColor(forecast.confidence)}`}>
+          {forecast.confidence}% Confidence
+        </div>
+      </div>
 
-- **🔗 Blockchain Verification**: Real-time verification of shipping events
-- **📊 Cost Forecasting**: Accurate landed cost predictions with confidence scoring
-- **🚀 API-First**: Enterprise-ready API for seamless integration
-- **📈 Batch Processing**: Handle multiple shipments simultaneously
-- **💰 ROI Calculator**: Industry-specific savings analysis
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-blue-50 rounded-lg p-4">
+          <div className="flex items-center space-x-2 mb-2">
+            <DollarSign className="h-5 w-5 text-blue-600" />
+            <h4 className="font-semibold text-gray-900">Total Landed Cost</h4>
+          </div>
+          <p className="text-2xl font-bold text-blue-600">{formatCurrency(forecast.total)}</p>
+          <p className="text-sm text-gray-600 mt-1">
+            Range: {formatCurrency(forecast.range.low)} - {formatCurrency(forecast.range.high)}
+          </p>
+        </div>
 
-## 🏗️ Tech Stack
+        <div className="bg-green-50 rounded-lg p-4">
+          <div className="flex items-center space-x-2 mb-2">
+            <Shield className="h-5 w-5 text-green-600" />
+            <h4 className="font-semibold text-gray-900">Accuracy Advantage</h4>
+          </div>
+          <p className="text-lg font-bold text-green-600">{forecast.accuracy}</p>
+          <p className="text-sm text-gray-600 mt-1">
+            Potential savings: {formatCurrency(forecast.savings)}
+          </p>
+        </div>
 
-**Frontend:**
-- React 18 with Hooks
-- Tailwind CSS for styling
-- Lucide React for icons
-- Progressive Web App ready
+        <div className="bg-purple-50 rounded-lg p-4">
+          <div className="flex items-center space-x-2 mb-2">
+            <Zap className="h-5 w-5 text-purple-600" />
+            <h4 className="font-semibold text-gray-900">Verification Rate</h4>
+          </div>
+          <p className="text-2xl font-bold text-purple-600">{forecast.verification.percentage}%</p>
+          <p className="text-sm text-gray-600 mt-1">
+            {forecast.verification.verified} of {forecast.verification.total} events verified
+          </p>
+        </div>
+      </div>
 
-**Backend:**
-- Node.js with Express
-- RESTful API design
-- Joi validation
-- Morgan logging
-- Helmet security
+      <div className="mt-6">
+        <h4 className="font-semibold text-gray-900 mb-4">Detailed Cost Breakdown</h4>
+        <div className="space-y-3">
+          {Object.entries(forecast.breakdown).map(([key, value]) => (
+            <div key={key} className="flex justify-between items-center py-2 border-b border-gray-100">
+              <span className="text-gray-700 capitalize">
+                {key === 'risk' ? 'Risk Buffer' : key} Costs
+              </span>
+              <span className="font-medium">{formatCurrency(value)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-**Infrastructure:**
-- Docker & Docker Compose
-- Kubernetes deployment ready
-- Nginx reverse proxy
-- CI/CD with GitHub Actions
+      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <div className="flex items-center space-x-2 mb-2">
+          <Info className="h-4 w-4 text-gray-600" />
+          <h5 className="font-medium text-gray-900">Key Assumptions</h5>
+        </div>
+        <ul className="text-sm text-gray-600 space-y-1">
+          <li>• Tariff rates based on current trade agreements</li>
+          <li>• Blockchain verification reduces uncertainty by 15-25%</li>
+          <li>• Risk buffer adjusted for verified shipping events</li>
+          <li>• Exchange rates as of {new Date().toLocaleDateString()}</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
 
-## 🚀 Quick Start
+// Batch Processing Component
+function BatchProcessing() {
+  const [csvData, setCsvData] = useState('');
+  const [batchResults, setBatchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-- Docker (optional)
+  const processBatchCSV = () => {
+    if (!csvData.trim()) {
+      alert('Please enter CSV data');
+      return;
+    }
+    
+    setLoading(true);
+    
+    setTimeout(() => {
+      // Mock processing
+      const mockResults = [
+        { id: 1, origin: 'CN', destination: 'US', total: 6800, confidence: 95, savings: 1560 },
+        { id: 2, origin: 'DE', destination: 'US', total: 4200, confidence: 92, savings: 960 },
+        { id: 3, origin: 'JP', destination: 'US', total: 5400, confidence: 89, savings: 1240 }
+      ];
+      setBatchResults(mockResults);
+      setLoading(false);
+    }, 3000);
+  };
 
-### Development Setup
+  const exportResults = () => {
+    const csv = [
+      'Origin,Destination,Total Cost,Confidence,Savings',
+      ...batchResults.map(r => `${r.origin},${r.destination},${r.total},${r.confidence}%,${r.savings}`)
+    ].join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'jiraya_forecasts.csv';
+    a.click();
+  };
 
-```bash
-# Clone and setup
-git clone <repository-url> jiraya-mvp
-cd jiraya-mvp
-chmod +x scripts/setup.sh
-./scripts/setup.sh
+  return (
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <Upload className="h-5 w-5 text-blue-600" />
+          <h2 className="text-xl font-semibold text-gray-900">Batch CSV Processing</h2>
+        </div>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              CSV Data (Format: Origin,Destination,Weight,Value,Mode)
+            </label>
+            <textarea
+              className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="CN,US,1000,50000,ocean&#10;DE,US,500,25000,air&#10;JP,US,2000,75000,ocean"
+              value={csvData}
+              onChange={(e) => setCsvData(e.target.value)}
+            />
+          </div>
+          
+          <div className="flex space-x-4">
+            <button
+              onClick={processBatchCSV}
+              disabled={loading}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center space-x-2"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <Calculator className="h-4 w-4" />
+                  <span>Process Batch</span>
+                </>
+              )}
+            </button>
+            
+            {batchResults.length > 0 && (
+              <button
+                onClick={exportResults}
+                className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+              >
+                <Download className="h-4 w-4" />
+                <span>Export Results</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
 
-# Start development
-./start-dev.sh
-```
+      {batchResults.length > 0 && (
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Batch Processing Results</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Route</th>
+                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Total Cost</th>
+                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Confidence</th>
+                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-700">Savings</th>
+                </tr>
+              </thead>
+              <tbody>
+                {batchResults.map((result) => (
+                  <tr key={result.id} className="border-b border-gray-100">
+                    <td className="py-3 px-3 text-sm">{result.origin} → {result.destination}</td>
+                    <td className="py-3 px-3 text-sm font-medium">${result.total.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-sm">
+                      <span className="px-2 py-1 rounded-full text-xs bg-green-50 text-green-600">
+                        {result.confidence}%
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-sm text-green-600 font-medium">${result.savings.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
-**URLs:**
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
-- Health: http://localhost:5000/health
+// Market Analytics Component
+function MarketAnalytics() {
+  const [roiInput, setRoiInput] = useState(500000);
+  const [roiResults, setRoiResults] = useState(null);
 
-### Production Deployment
+  const calculateROI = () => {
+    const accuracyImprovement = 0.23; // 23%
+    const jirayaAnnualCost = 25000 * 12; // Enterprise plan
+    
+    const annualSavings = roiInput * accuracyImprovement;
+    const netSavings = annualSavings - jirayaAnnualCost;
+    const roi = (netSavings / jirayaAnnualCost) * 100;
+    const paybackMonths = jirayaAnnualCost / (annualSavings / 12);
 
-```bash
-# Deploy with Docker
-chmod +x scripts/deploy.sh
-./scripts/deploy.sh
-```
+    setRoiResults({
+      annualSavings: Math.round(annualSavings),
+      netSavings: Math.round(netSavings),
+      roi: Math.round(roi),
+      paybackMonths: Math.round(paybackMonths * 10) / 10
+    });
+  };
 
-## 📊 Demo the MVP
+  return (
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <BarChart3 className="h-5 w-5 text-blue-600" />
+          <h2 className="text-xl font-semibold text-gray-900">Market Analytics & ROI Calculator</h2>
+        </div>
 
-### Single Forecast
-1. Select origin (China) and destination (United States)
-2. Enter weight (1000kg) and value ($50,000)
-3. Choose shipping mode (Ocean Freight)
-4. Get instant forecast with blockchain verification
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">Market Size</h3>
+            <p className="text-2xl font-bold text-blue-600">$16.2B</p>
+            <p className="text-sm text-gray-600">Global logistics software market</p>
+            <p className="text-xs text-gray-500 mt-1">Growing at 9.4% CAGR</p>
+          </div>
 
-### Batch Processing
-1. Upload CSV with multiple shipments
-2. Process up to 10 shipments simultaneously
-3. Export results with savings analysis
+          <div className="bg-green-50 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">Customer CAC</h3>
+            <p className="text-2xl font-bold text-green-600">$6,200</p>
+            <p className="text-sm text-gray-600">B2B SaaS average</p>
+            <p className="text-xs text-gray-500 mt-1">Logistics software benchmark</p>
+          </div>
 
-### Market Analytics
-1. View industry benchmarks
-2. Calculate custom ROI scenarios
-3. Compare with traditional solutions
+          <div className="bg-purple-50 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">LTV:CAC Ratio</h3>
+            <p className="text-2xl font-bold text-purple-600">50:1</p>
+            <p className="text-sm text-gray-600">Projected by Year 3</p>
+            <p className="text-xs text-gray-500 mt-1">Exceptional performance</p>
+          </div>
+        </div>
 
-## 🔧 API Endpoints
+        <div className="mt-8">
+          <h3 className="font-semibold text-gray-900 mb-4">ROI Calculator</h3>
+          <div className="bg-gray-50 rounded-lg p-4">
+            <div className="flex items-center space-x-4 mb-4">
+              <label className="text-sm font-medium text-gray-700">Annual Logistics Costs:</label>
+              <input
+                type="number"
+                value={roiInput}
+                onChange={(e) => setRoiInput(parseFloat(e.target.value) || 0)}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <button
+                onClick={calculateROI}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              >
+                Calculate ROI
+              </button>
+            </div>
+            
+            {roiResults && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-green-600">${roiResults.annualSavings.toLocaleString()}</p>
+                  <p className="text-xs text-gray-600">Annual Savings</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-blue-600">${roiResults.netSavings.toLocaleString()}</p>
+                  <p className="text-xs text-gray-600">Net Savings</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-purple-600">{roiResults.roi}%</p>
+                  <p className="text-xs text-gray-600">ROI</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-orange-600">{roiResults.paybackMonths}</p>
+                  <p className="text-xs text-gray-600">Payback (months)</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
-```
-GET  /health                     # Health check
-POST /api/forecast/calculate     # Calculate forecast
-GET  /api/forecast/routes        # Supported routes
-GET  /api/blockchain/events/:route # Blockchain events
-POST /api/batch/process          # Batch processing
-GET  /api/analytics/market       # Market data
-GET  /api/analytics/roi          # ROI calculation
-```
+        <div className="mt-8 p-6 bg-gradient-to-r from-blue-600 to-green-600 rounded-lg text-white">
+          <h3 className="font-semibold mb-2">Competitive Advantage</h3>
+          <p className="text-sm mb-4">
+            Jiraya delivers 23% accuracy improvement through blockchain verification, 
+            compared to traditional ERP-based forecasting systems.
+          </p>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold">77%</p>
+              <p className="text-xs">Traditional Accuracy</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold">95%</p>
+              <p className="text-xs">Jiraya Accuracy</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold">5.2x</p>
+              <p className="text-xs">Average ROI</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-## 📈 Business Model
+// Footer Component
+function Footer() {
+  return (
+    <div className="mt-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-xl text-white p-8 mx-4">
+      <div className="text-center max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold mb-4">Ready to Transform Your Supply Chain?</h2>
+        <p className="text-lg mb-6">
+          Join 500+ companies using blockchain-verified shipping data for accurate cost forecasting
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+            <h3 className="font-semibold mb-2">API Pricing</h3>
+            <p className="text-2xl font-bold">$0.15</p>
+            <p className="text-sm opacity-80">per forecast</p>
+          </div>
+          <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+            <h3 className="font-semibold mb-2">Enterprise Plans</h3>
+            <p className="text-2xl font-bold">$25K+</p>
+            <p className="text-sm opacity-80">per month</p>
+          </div>
+          <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+            <h3 className="font-semibold mb-2">Average Payback</h3>
+            <p className="text-2xl font-bold">5.2</p>
+            <p className="text-sm opacity-80">months</p>
+          </div>
+        </div>
+        
+        <div className="mt-8 pt-6 border-t border-white/20 text-sm opacity-80">
+          <p>&copy; 2025 Jiraya. Blockchain-Anchored Shipping Cost Forecasting Engine.</p>
+          <p className="mt-2">Built for the No-Pitch Competition • Designed to Scale</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-### Revenue Streams
-- **API Usage**: $0.15 per forecast
-- **SaaS Tiers**: $2.5K - $25K monthly
-- **Enterprise**: $50K - $500K annual contracts
+// Mock calculation functions
+function mockCalculateForecast(data) {
+  const weight = parseFloat(data.weight);
+  const value = parseFloat(data.value);
+  
+  // Mock calculations
+  const freightCost = weight * 2.8;
+  const dutyAmount = value * 0.075;
+  const vatAmount = 0;
+  const processingFees = 150;
+  const brokerFees = Math.max(85, value * 0.008);
+  const insuranceCost = value * 0.002;
+  const riskBuffer = (freightCost + dutyAmount + processingFees + brokerFees + insuranceCost) * 0.08;
+  
+  const totalCost = freightCost + dutyAmount + vatAmount + processingFees + brokerFees + insuranceCost + riskBuffer;
+  const confidenceScore = 95;
+  const savings = Math.round(totalCost * 0.23);
+  
+  return {
+    breakdown: {
+      freight: Math.round(freightCost),
+      duty: Math.round(dutyAmount),
+      vat: Math.round(vatAmount),
+      processing: processingFees,
+      broker: Math.round(brokerFees),
+      insurance: Math.round(insuranceCost),
+      risk: Math.round(riskBuffer)
+    },
+    total: Math.round(totalCost),
+    confidence: confidenceScore,
+    range: {
+      low: Math.round(totalCost * 0.92),
+      high: Math.round(totalCost * 1.08)
+    },
+    accuracy: "23.0% better than traditional forecasting",
+    savings: savings,
+    verification: {
+      verified: 4,
+      total: 6,
+      percentage: 67
+    }
+  };
+}
 
-### Unit Economics
-- **CAC**: $6,200 (industry standard)
-- **LTV**: $310,000 by Year 3
-- **Gross Margin**: 85%+ (SaaS standard)
-- **Payback**: 5.2 months
-
-### Market Opportunity
-- **TAM**: $16.2B global logistics software market
-- **Growth**: 9.4% CAGR
-- **Differentiation**: First blockchain-verified forecasting
-
-## 🎯 Competitive Advantage
-
-| Feature | Jiraya | Oracle | SAP | E2open |
-|---------|--------|--------|-----|--------|
-| Accuracy | 95% | 77% | 75% | 73% |
-| Real-time | ✅ | ❌ | ❌ | ❌ |
-| Blockchain | ✅ | ❌ | ❌ | ❌ |
-| Price | $25K | $500K | $200K | $150K |
-
-## 🧪 Testing
-
-```bash
-# Frontend tests
-cd frontend && npm test
-
-# Backend tests
-cd backend && npm test
-
-# Coverage report
-cd backend && npm run test:coverage
-```
-
-## 🚀 Deployment Options
-
-### Local Development
-```bash
-./start-dev.sh
-```
-
-### Docker Compose
-```bash
-docker-compose up --build
-```
-
-### Kubernetes
-```bash
-kubectl apply -f kubernetes/
-```
-
-### Cloud Deployment
-- AWS ECS/EKS ready
-- Google Cloud Run compatible
-- Azure Container Instances ready
-
-## 📊 Performance Metrics
-
-- **Response Time**: <200ms average
-- **Throughput**: 1000+ requests/second
-- **Uptime**: 99.9% target
-- **Accuracy**: 95% forecast confidence
-
-## 🔐 Security
-
-- Helmet.js security headers
-- CORS protection
-- Rate limiting
-- Input validation with Joi
-- Environment variable protection
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🏆 No-Pitch Competition
-
-This MVP was built for the No-Pitch Competition 2025, focusing on:
-- **Strong Financial Model**: Investor-grade projections
-- **Technical Feasibility**: Working MVP with scalable architecture
-- **Market Validation**: Clear competitive advantage and TAM
-
-**Key Metrics for Competition:**
-- Path to $35M+ ARR
-- Exceptional unit economics
-- Proven market demand
-- Technical differentiation
-
-## 📞 Contact
-
-- **Team**: Jiraya MVP Team
-- **Email**: team@jiraya.com
-- **Website**: https://jiraya.com
-- **Competition**: No-Pitch
+function mockGenerateBlockchainEvents(origin, destination) {
+  return [
+    { id: 1, event: 'Factory Pickup Confirmed', verified: true, confidence: 98, timestamp: '2025-05-27 09:15', hash: '0x4a7b...' },
+    { id: 2, event: 'Export Documentation', verified: true, confidence: 96, timestamp: '2025-05-27 14:30', hash: '0x8c9d...' },
+    { id: 3, event: 'Container Loading', verified: true, confidence: 99, timestamp: '2025-05-28 08:45', hash: '0x2f1e...' },
+    { id: 4, event: 'Port Departure', verified: true, confidence: 97, timestamp: '2025-05-28 18:20', hash: '0x7b3a...' },
+    { id: 5, event: 'Vessel Transit', verified: false, confidence: 85, timestamp: '2025-06-01 12:00', hash: 'pending' },
+    { id: 6, event: 'Customs Pre-clearance', verified: false, confidence: 78, timestamp: '2025-06-14 09:30', hash: 'pending' }
+  ];
+}
